@@ -12,19 +12,10 @@
     },
     "message": {
       "type": "object",
-      "properties": {
-        "foo": {
-          "type": "string"
-        },
-        "baz": {
-          "type": "string"
-        }
+      "additionalProperties": {
+        "type": "string"
       },
-      "anyOf": [
-        {"required": ["foo"]},
-        {"required": ["baz"]}
-      ],
-      "additionalProperties": false
+      "minProperties": 1
     },
     "sent-from-ip": {
       "type": "string",
