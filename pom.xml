@@ -8,29 +8,19 @@
         <version>2.6.3</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.deenayn.unity</groupId>
-    <artifactId>assignment</artifactId>
+    <groupId>com.deenayn.unity.assignment</groupId>
+    <artifactId>messageSender</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>Assignment</name>
-    <description>Test assignment for Unity</description>
+    <name>Message Sender</name>
+    <description>Verifies json message and saves it to Postgres and Kafka</description>
     <properties>
         <java.version>11</java.version>
     </properties>
     <dependencies>
+        <!-- Spring -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -46,7 +36,19 @@
             <artifactId>spring-kafka</artifactId>
         </dependency>
 
-        <!-- -->
+        <!-- Database -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- Tools -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
         <dependency>
             <groupId>com.github.erosb</groupId>
             <artifactId>everit-json-schema</artifactId>
