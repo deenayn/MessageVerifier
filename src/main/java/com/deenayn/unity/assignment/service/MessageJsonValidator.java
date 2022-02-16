@@ -15,7 +15,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-@Service //TODO add interface?
+@Service
 @Slf4j
 public class MessageJsonValidator {
 
