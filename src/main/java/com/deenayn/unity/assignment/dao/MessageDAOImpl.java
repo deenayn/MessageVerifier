@@ -1,4 +1,4 @@
-package com.deenayn.unity.assignment.service.sender;
+package com.deenayn.unity.assignment.dao;
 
 import com.deenayn.unity.assignment.model.MessageInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -10,19 +10,19 @@ import java.util.Map;
 
 @Component
 @Slf4j
-public class PostgresMessageSender implements MessageSender {
+public class MessageDAOImpl implements MessageDAO {
 
     static final String INSERT_QUERY = "INSERT INTO message_info (ts, sender, message, sent_from_ip, priority) VALUES" +
             "(:ts, :sender, to_json(:message::json), :sent_from_ip, :priority)";
 
     private final NamedParameterJdbcTemplate namedJdbcTemplate;
 
-    public PostgresMessageSender(NamedParameterJdbcTemplate namedJdbcTemplate) {
+    public MessageDAOImpl(NamedParameterJdbcTemplate namedJdbcTemplate) {
         this.namedJdbcTemplate = namedJdbcTemplate;
     }
 
     @Override
-    public void send(MessageInfo messageInfo) {
+    public void save(MessageInfo messageInfo) {
         try {
             Map<String, Object> paramMap = new HashMap<>();
             paramMap.put("ts", messageInfo.getTs());
@@ -31,8 +31,9 @@ public class PostgresMessageSender implements MessageSender {
             paramMap.put("sent_from_ip", messageInfo.getSentFromIp());
             paramMap.put("priority", messageInfo.getPriority());
             namedJdbcTemplate.update(INSERT_QUERY, paramMap);
+            log.info("Successfully saved data to database, data = {}", messageInfo.toString());
         } catch (Exception e) {
-            log.error("Couldn't save data to postgres, reason = {}", e.getMessage());
+            log.error("Couldn't save data to database, reason = {}", e.getMessage());
             throw e;
         }
     }
