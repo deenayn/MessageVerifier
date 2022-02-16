@@ -6,6 +6,7 @@ import com.deenayn.unity.assignment.service.KafkaMessageSender;
 import com.deenayn.unity.assignment.service.MessageJsonValidator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.everit.json.schema.ValidationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,18 +31,19 @@ public class MessageController {
 
     @PostMapping("/")
     public ResponseEntity<Object> postMessage(@RequestBody String message) {
-        if (messageJsonValidator.validate(message)) {
-            try {
-                MessageInfo messageInfo = objectMapper.readValue(message, MessageInfo.class);
-                messageDAO.save(messageInfo);
-                kafkaMessageSender.send(message);
-                return ResponseEntity.ok().build();
-            } catch (Exception e) {
-                log.error("Error while sending message, reason = {}", e.getMessage());
-                return ResponseEntity.internalServerError().build();
-            }
+        try {
+            messageJsonValidator.validate(message);
+            MessageInfo messageInfo = objectMapper.readValue(message, MessageInfo.class);
+            messageDAO.save(messageInfo);
+            kafkaMessageSender.send(message);
+            log.info("Validated and saved message {}", message);
+            return ResponseEntity.ok().build();
+        } catch (ValidationException e) {
+            log.error("Failed to validate json, reason = {}", e.getErrorMessage());
+            return ResponseEntity.badRequest().body("Invalid json, reason = " + e.getErrorMessage());
+        } catch (Exception e) {
+            log.error("Error while sending message, reason = {}", e.getMessage());
+            return ResponseEntity.internalServerError().body("Internal error");
         }
-        return ResponseEntity.badRequest().build();
-
     }
 }

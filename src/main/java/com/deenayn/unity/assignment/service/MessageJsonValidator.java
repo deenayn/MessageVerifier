@@ -30,14 +30,7 @@ public class MessageJsonValidator {
         }
     }
 
-    public boolean validate(String message) {
-        try {
-            validator.performValidation(schema, new JSONObject(message));
-            log.info("Successfully validated json {}", message);
-            return true;
-        } catch (ValidationException e) {
-            log.error("Failed to validate json, reason = {}", e.getErrorMessage());
-            return false;
-        }
+    public void validate(String message) throws ValidationException {
+        validator.performValidation(schema, new JSONObject(message));
     }
 }
