@@ -20,6 +20,7 @@ public class MessageController {
     private final MessageJsonValidator messageJsonValidator;
     private final MessageDAO messageDAO;
     private final KafkaMessageSender kafkaMessageSender;
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     public MessageController(MessageJsonValidator messageJsonValidator, MessageDAO messageDAO, KafkaMessageSender kafkaMessageSender) {
         this.messageJsonValidator = messageJsonValidator;
@@ -31,7 +32,6 @@ public class MessageController {
     public ResponseEntity<Object> postMessage(@RequestBody String message) {
         if (messageJsonValidator.validate(message)) {
             try {
-                ObjectMapper objectMapper = new ObjectMapper(); //TODO move to service or pool
                 MessageInfo messageInfo = objectMapper.readValue(message, MessageInfo.class);
                 messageDAO.save(messageInfo);
                 kafkaMessageSender.send(message);
