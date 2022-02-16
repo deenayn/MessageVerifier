@@ -22,7 +22,7 @@ public class MessageJsonValidator {
     private final Validator validator = Validator.builder().failEarly().build();
     private final Schema schema;
 
-    private MessageJsonValidator() throws IOException {
+    protected MessageJsonValidator() throws IOException {
         File file = ResourceUtils.getFile("classpath:messageSchema.json");
         try (InputStream inputStream = new FileInputStream(file)) {
             JSONObject rawSchema = new JSONObject(new JSONTokener(inputStream));
