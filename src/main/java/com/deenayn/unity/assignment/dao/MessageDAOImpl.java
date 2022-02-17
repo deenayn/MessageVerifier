@@ -5,7 +5,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
-import java.util.Map;
 
 @Component
 public class MessageDAOImpl implements MessageDAO {
@@ -21,7 +20,7 @@ public class MessageDAOImpl implements MessageDAO {
 
     @Override
     public void save(MessageInfo messageInfo) {
-        Map<String, Object> paramMap = new HashMap<>();
+        var paramMap = new HashMap<String, Object>();
         paramMap.put("ts", messageInfo.getTs());
         paramMap.put("sender", messageInfo.getSender());
         paramMap.put("message", messageInfo.getMessage().toString());

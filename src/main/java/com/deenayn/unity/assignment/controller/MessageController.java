@@ -33,7 +33,7 @@ public class MessageController {
     public ResponseEntity<Object> postMessage(@RequestBody String message) {
         try {
             messageJsonValidator.validate(message);
-            MessageInfo messageInfo = objectMapper.readValue(message, MessageInfo.class);
+            var messageInfo = objectMapper.readValue(message, MessageInfo.class);
             messageDAO.save(messageInfo);
             kafkaMessageSender.send(message);
             log.info("Validated and saved message {}", message);
