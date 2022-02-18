@@ -2,7 +2,7 @@
 
 Message Verifier app verifies json message structure, saves the message to Postgres and sends to Kafka. 
 
-###How to run:
+### How to run:
 1. Go to the app folder
 1. Run `mvn clean package`
 2. Run `docker build -t message-sender .`
@@ -10,7 +10,7 @@ Message Verifier app verifies json message structure, saves the message to Postg
 
 With default configuration server will be run on `localhost:8080`
 
-###How to send a message:
+### How to send a message:
 To send a message you can send POST request to `/api/message/` endpoint with following body:
 ```json
 {
